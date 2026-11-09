@@ -1,0 +1,8 @@
+.search-form.single {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.search-form.single .submit {
+  grid-column: 1 / -1;
+}
+

@@ -1,0 +1,257 @@
+<div class="page">
+  <header class="top-nav">
+    <div class="logo" aria-label="Maervia Airways">
+      <span class="logo-icon" aria-hidden="true">✈</span>
+      <div class="logo-text">
+        <span class="brand">MAERVIA</span>
+        <span class="brand-sub">AIRWAYS</span>
+      </div>
+    </div>
+
+    <nav class="primary-nav" aria-label="Main navigation">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/explorer" routerLinkActive="active">Explore</a>
+      <a routerLink="/reserver" routerLinkActive="active">Book</a>
+      <a routerLink="/experience" routerLinkActive="active">Experience</a>
+      <a routerLink="/club" routerLinkActive="active">Privilege Club</a>
+    </nav>
+
+    <div class="actions">
+      <a class="link" routerLink="/help" routerLinkActive="active">Help</a>
+      <button class="icon-btn" aria-label="Search">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M11 4a7 7 0 0 1 5.6 11.2l3.15 3.15-1.4 1.4-3.16-3.14A7 7 0 1 1 11 4Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+      <div class="lang-wrapper">
+        <button class="icon-btn lang" aria-label="Available languages" type="button" (click)="toggleLangMenu()">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 0c3 3 3 15 0 18m0-18c-3 3-3 15 0 18M3 12h18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+            />
+          </svg>
+          <span>{{ languageService.currentLang }}</span>
+          <span class="divider">|</span>
+          <span (click)="switchLanguage($event)" style="cursor: pointer;">{{ languageService.currentLang === 'EN' ? 'FR' : 'EN' }}</span>
+        </button>
+        <ul class="lang-menu" *ngIf="isLangMenuOpen">
+          <li (click)="setLanguage('EN')">
+            English <span *ngIf="languageService.currentLang === 'EN'">✓</span>
+          </li>
+          <li (click)="setLanguage('FR')">
+            Français <span *ngIf="languageService.currentLang === 'FR'">✓</span>
+          </li>
+        </ul>
+      </div>
+      <div class="user-menu-wrapper" *ngIf="authService.currentUser">
+        <button class="icon-btn user-btn" aria-label="Account" type="button">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6 8v-1a4 4 0 0 0-4-4H10a4 4 0 0 0-4 4v1"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+        <div class="user-menu">
+          <div class="user-info">
+            <p class="user-email">{{ authService.currentUser.email }}</p>
+          </div>
+          <div class="menu-divider"></div>
+          <a routerLink="/account" class="menu-item">
+            <span>Account Settings</span>
+          </a>
+          <a routerLink="/account" class="menu-item">
+            <span>View Bookings</span>
+          </a>
+          <button type="button" class="menu-item logout" (click)="authService.logout(); router.navigate(['/'])">
+            <span>Log Out</span>
+            <svg viewBox="0 0 24 24" width="16" height="16">
+              <path
+                d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="auth-links" aria-label="Account actions" *ngIf="!authService.currentUser">
+        <button type="button" class="auth-link" (click)="openConnexion()">Sign in</button>
+        <span class="auth-divider">|</span>
+        <a class="auth-link" routerLink="/inscription" routerLinkActive="active">Sign up</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="hero simple-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Your one-way journey, without compromise</h1>
+      <p class="subtitle">
+        Choose maximum flexibility for unique trips with premium options and 24/7 support.
+      </p>
+
+      <section class="booking-card" aria-label="Recherche de vols aller simple">
+        <div class="trip-tabs" role="tablist">
+          <a class="tab" role="tab" routerLink="/" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">Round trip</a>
+          <span class="tab active" role="tab" aria-current="page">One-way</span>
+          <a class="tab" role="tab" routerLink="/multi-destinations" routerLinkActive="active">Multi-city</a>
+        </div>
+
+        <form class="search-form single">
+          <label class="form-field">
+            <span class="label">Departure city</span>
+            <input placeholder="Paris (CDG)" />
+          </label>
+          <label class="form-field">
+            <span class="label">Destination</span>
+            <input placeholder="Singapore (SIN)" />
+          </label>
+          <label class="form-field">
+            <span class="label">Departure date</span>
+            <button type="button" class="picker">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 4v3m10-3v3M4 9h16v10H4Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+              </svg>
+              Select
+            </button>
+          </label>
+          <label class="form-field">
+            <span class="label">Flexibility</span>
+            <button type="button" class="selector">
+              ± 2 days
+              <span class="chevron">▾</span>
+            </button>
+          </label>
+          <label class="form-field">
+            <span class="label">Passengers</span>
+            <button type="button" class="selector">
+              2 travelers
+              <span class="chevron">▾</span>
+            </button>
+          </label>
+          <label class="form-field">
+            <span class="label">Cabin</span>
+            <button type="button" class="selector">
+              First
+              <span class="chevron">▾</span>
+            </button>
+          </label>
+          <label class="form-field">
+            <span class="label">Services</span>
+            <button type="button" class="selector">
+              Chauffeur + Lounge
+              <span class="chevron">▾</span>
+            </button>
+          </label>
+          <div class="form-field submit">
+            <button type="submit" class="search-button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M11 4a7 7 0 0 1 5.6 11.2l3.15 3.15-1.4 1.4-3.16-3.14A7 7 0 1 1 11 4Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                />
+              </svg>
+              Find my flight
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <section class="popular">
+    <header class="popular-head">
+      <p class="eyebrow">Popular destinations</p>
+      <h2>One-way ideas to personalize</h2>
+      <p class="sub">
+        Get inspired by our favorite routes and tailor them to your plans in moments.
+      </p>
+    </header>
+
+    <div class="popular-grid">
+      <article class="destination-card" *ngFor="let destination of destinations">
+        <img [src]="destination.image" [alt]="destination.city" />
+        <div class="card-overlay">
+          <span class="country">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 21c2.5-3 6-7 6-10a6 6 0 1 0-12 0c0 3 3.5 7 6 10Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <circle cx="12" cy="11" r="1.6" fill="currentColor"></circle>
+            </svg>
+            {{ destination.country }}
+          </span>
+          <h3>{{ destination.city }}</h3>
+          <p class="price">From {{ destination.price }}</p>
+          <button class="ghost">Book now</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <div class="logo" aria-label="Maervia Airways">
+        <span class="logo-icon" aria-hidden="true">✈</span>
+        <div class="logo-text">
+          <span class="brand" style="color: rgb(255, 255, 255);">MAERVIA</span>
+          <span class="brand-sub">AIRWAYS</span>
+        </div>
+      </div>
+      <p>
+        Your partner for designing rare and refined itineraries worldwide.
+      </p>
+    </div>
+    <div class="footer-columns">
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li>Private journeys</li>
+          <li>Tailor-made events</li>
+          <li>Concierge team</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>+1 (202) 555-0138</li>
+          <li>explorer@maervia.com</li>
+          <li>Paris · Montreal · Dubai</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Follow us</h4>
+        <ul>
+          <li>Instagram</li>
+          <li>LinkedIn</li>
+          <li>Newsletter</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>
+
